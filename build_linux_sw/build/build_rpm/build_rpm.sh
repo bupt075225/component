@@ -8,7 +8,7 @@ SOURCE_TARBALL_NAME="demo-1.0.tar"
 username=`whoami`
 if [ $username == 'root' ];then
     echo "Warning: Forbid root user build RPM package"
-    exit 1
+    #exit 1
 fi
 
 # 确认发布版本号

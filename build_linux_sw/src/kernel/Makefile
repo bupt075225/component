@@ -21,7 +21,7 @@ all:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules
 
 install: all
-	install -m 644 module_demo.ko $(INSTALL_DIR)
+	install -vD -m 644 module_demo.ko $(INSTALL_DIR)/module_demo.ko
 
 uninstall:
 	rm -f $(INSTALL_DIR)/module_demo.ko

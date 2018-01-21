@@ -1,9 +1,15 @@
-set incsearch
-set hlsearch
-set nocompatible " Use Vim defaults (much better!)
-set autoindent " always set autoindenting on
-set history=50 " keep 50 lines of command line history
-set ruler " show the cursor position all the time
+"--------------------------------------------------
+" Descriptor: vimrc for Linux no plugin
+" Author: Bill Liu
+" Email: nonprivatemail@163.com
+"--------------------------------------------------
+
+set incsearch    " incremental search
+set hlsearch     " highlight search result
+set nocompatible " use Vim defaults (much better!)
+set autoindent   " always set autoindenting on
+set history=50   " keep 50 lines of command line history
+set ruler        " show the cursor position all the time
 set showcmd
 set writebackup
 set nu

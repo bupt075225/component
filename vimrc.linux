@@ -17,7 +17,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Added nerdtree
 Plugin 'scrooloose/nerdtree'
 
-let NERDTreeIgnore=['*.pyc'] " ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$'] " ignore files in NERDTree
 let NERDTreeWinPos='right'   " nerdtree locate at right side
 let NERDTreeShowBookmarks = 1
 " Open NERDTree with F2
@@ -92,7 +92,7 @@ au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|
 "--------------------------------------------------
 set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936  " encode supported
 set fileencoding=utf-8  " current file encode
-set encoding=utf-8      " gvim internal file encode
+set encoding=utf-8      " vim internal file encode
 set langmenu=zh_CN
 let $LANG = 'en_US.UTF-8'
 language messages zh_CN.utf-8  " avoid consle output garbled under windows system
@@ -115,7 +115,7 @@ set guioptions-=L
 set guioptions-=r
 set guioptions-=b
 
-set guioptions-=e    " use vim tab but not gvim
+set guioptions-=e    " use vim tab
 
 set guifont=Courier\ New:h14  " font and size
 au GUIEnter * simalt ~x " the window is automatically maximized when it starts up
@@ -142,4 +142,14 @@ highlight BadWhitespace ctermbg=red guibg=red
 
 " it can mark whitespace issues
 au BufRead,BufNewFile *.py,*.c,*.h match BadWhitespace /\s\+$/
+
+" add the proper PEP 8 indentation
+au BufNewFile,BufRead *.py
+    \set tabstop=4
+    \set softtabstop=4
+    \set shiftwidth=4
+    \set textwidth=79
+    \set expandtab
+    \set autoindent
+    \set fileformat=unix
 

@@ -2,6 +2,7 @@
 # RPM Spec file
 #===================================================================
 
+# 安装目录下的文件没有被%files包含,只是警告而不是停止构建
 %define _unpackaged_files_terminate_build 0
 %define packageName demo
 %define source_version 1.0

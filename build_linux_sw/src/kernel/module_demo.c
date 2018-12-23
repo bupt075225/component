@@ -13,7 +13,7 @@ static int __init module_demo_init(void)
 
 static void __exit module_demo_exit(void)
 {
-    printk("Goodbye, world\n");    
+    printk("Goodbye world,exit kernel module demo\n");    
 }
 
 module_init(module_demo_init);

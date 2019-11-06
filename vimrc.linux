@@ -107,7 +107,7 @@ set fileformat=unix     " new file <EOL>
 " GUI setting
 "--------------------------------------------------
 colorscheme evening
-set splitbelow       " the split window is located below
+set splitbelow       " the split window is located below 
 set splitright       " the split window is located to right
 set guioptions-=T    " hide the toolbar
 set guioptions-=m    " hide the menu bar
@@ -119,6 +119,10 @@ set guioptions-=e    " use vim tab
 
 set guifont=Courier\ New:h14  " font and size
 au GUIEnter * simalt ~x " the window is automatically maximized when it starts up
+
+" status line
+set statusline=%F%m\ \ \ \ %{\"\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\"+\":\"\").\"\"}\ \ \ \ \ %l,%v\ %p%%
+set laststatus=2     " show status line anyway
 
 "--------------------------------------------------
 " Find/replace setting 

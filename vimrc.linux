@@ -5,17 +5,14 @@
 "--------------------------------------------------
 
 "--------------------------------------------------
-" Vundle setting
+" vim-plug setting
 "--------------------------------------------------
-filetype off         " vundle require disable file type detection
-set rtp+=~/.vim/bundle/Vundle.vim   " set vundle install path
-call vundle#begin('~/.vim/bundle/Vundle.vim')  " set a path where vundle should install plugins
-" Let vundle manage vundle
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin()
 
-" All of your plugins must be added before the following line
+" Make sure you use single quotes
+
 " Added nerdtree
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 
 let NERDTreeIgnore=['\.pyc$'] " ignore files in NERDTree
 let NERDTreeWinPos='right'   " nerdtree locate at right side
@@ -28,47 +25,67 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 autocmd vimenter * NERDTree 
 autocmd vimenter * wincmd p  " focus main windows on launch
 
-" Added Ctrlp
-Plugin 'kien/ctrlp.vim'
+" Added Ctrlp, Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
+Plug 'kien/ctrlp.vim'
 
-map <c-o> :CtrlP <cr>
 " Exclude files and directories
-set wildignore+=*/tmp/*,*/.git/*,*.swp,*.pyc,*.so,*.zip
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|svn)$',
+  \ 'file': '\v\.(swp|pyc|so|tar|tar.gz|zip)$',
+  \ }
+" Open a new file in a new tab
+let g:ctrlp_prompt_mappings = {
+  \ 'AcceptSelection("e")': ['<c-t>'],
+  \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
+  \ }
 
-" Added cscove(a smart cscope helper)
-Plugin 'brookhong/cscope.vim'
+" Added ack(You will need ack (>= 2.0)),a search tool as a replacement for
+" grep
+Plug 'mileszs/ack.vim'
 
-nnoremap <C-\>fa :call CscopeFindInteractive(expand('<cword>'))<CR>
-nnoremap <C-\>l :call ToggleLocationList()<CR>
-" s: Find this C symbol
-nnoremap  <C-\>s :call CscopeFind('s', expand('<cword>'))<CR>
-" c: Find functions calling this function
-nnoremap  <C-\>c :call CscopeFind('c', expand('<cword>'))<CR>
-" e: Find this egrep pattern
-nnoremap  <C-\>e :call CscopeFind('e', expand('<cword>'))<CR>
-" i: Find files #including this file
-nnoremap  <C-\>fi :call CscopeFind('i', expand('<cword>'))<CR>
-" d: Find functions called by this function
-nnoremap  <C-\>d :call CscopeFind('d', expand('<cword>'))<CR>
+" highlight the keyword
+let g:ackhighlight = 1
+
+" Added gutentags(management of tags files)
+" required vim version >=8.0 and ctags
+Plug 'ludovicchabant/vim-gutentags'
+
+" To know when Gutentags is generating tags
+"set statusline+=%{gutentags#statusline()}
+let g:gutentags_project_root = ['.git']
+
+" To know when Gutentags is generating tags
+set statusline+=%{gutentags#statusline()}
+let g:gutentags_project_root = ['.svn', '.git']
+" the suffix of tags data files
+let g:gutentags_ctags_tagfile = '.tags'
+" To avoid tags files to pollute your projects
+let s:vim_tags = expand('~/.cache/vim_tags')
+let g:gutentags_cache_dir = s:vim_tags
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
 
 " Added autotag
-Plugin 'craigemery/vim-autotag'
+Plug 'craigemery/vim-autotag'
 
 let g:autotagTagsFile="tags"
 
-call vundle#end()
+call plug#end()
 filetype plugin indent on  " not to ignore plugin indent changes
 
 " Brief help
-" :PluginList        - lists configured plugins
-" :PluginInstall     - installs plugins; append `!` to update or :PluginUpdate
-" :PluginSearch foo  - searches for foo; append `!` to refresh local cache
-" :PluginClean       - confirms removal of unused plugins; append `!` to auto
+" :PlugStatus      - Check the status of plugins
+" :PlugInstall     - installs plugins; append `!` to update or :PlugUpdate
+" :PlugClean       - confirms removal of unused plugins; append `!` to auto
 
 "--------------------------------------------------
 " General setting
 "--------------------------------------------------
 set nocompatible     " Use Vim defaults (much better!)
+" To allow backspacing over everything in insert mode when compile vim
+" manually
+set backspace=indent,eol,start
 set history=50       " keep 50 lines of command line history
 set nu!              " dispaly the line numbers
 set nowrap           " no auto new line 
@@ -95,7 +112,6 @@ set fileencoding=utf-8  " current file encode
 set encoding=utf-8      " vim internal file encode
 set langmenu=zh_CN
 let $LANG = 'en_US.UTF-8'
-language messages zh_CN.utf-8  " avoid consle output garbled under windows system
 
 " avoid menu garbled under windows system
 source $VIMRUNTIME/delmenu.vim
@@ -107,7 +123,7 @@ set fileformat=unix     " new file <EOL>
 " GUI setting
 "--------------------------------------------------
 colorscheme evening
-set splitbelow       " the split window is located below 
+set splitbelow       " the split window is located below
 set splitright       " the split window is located to right
 set guioptions-=T    " hide the toolbar
 set guioptions-=m    " hide the menu bar
@@ -157,3 +173,17 @@ au BufNewFile,BufRead *.py
     \set autoindent
     \set fileformat=unix
 
+let mapleader = ","
+" mapping key to edit vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" mapping key for quickfix
+nnoremap <C-j> :cnext<CR>
+nnoremap <C-k> :cprev<CR>
+nnoremap  <leader>oq :<C-u>copen<CR>
+nnoremap  <leader>cq :<C-u>cclose<CR>
+
+" mapping key for ack
+" -i case-insensitive, Ctrl+r" to paste from the register
+nnoremap <Leader>a :Ack!<space>-i<space><C-r>"<CR>

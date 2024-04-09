@@ -7,10 +7,12 @@ CUR_DIR=$(pwd)
 prepare_context ()
 {
     echo "preparing context"
-    cp $CUR_DIR/$INSTALLER $WORK_DIR
+    cp -fr $CUR_DIR/context/sources.list $WORK_DIR
     cp -fr $CUR_DIR/context/plug.vim $WORK_DIR
-    cp -fr $CUR_DIR/context/RPM-GPG-KEY-EPEL-8 $WORK_DIR
-    cp -fr $CUR_DIR/context/yum.repos.d/* $WORK_DIR
+    cp -fr $CUR_DIR/context/show_git_branch_conf $WORK_DIR
+    cp -fr $CUR_DIR/context/git-completion.bash $WORK_DIR
+
+    cp $CUR_DIR/$INSTALLER $WORK_DIR
     cp $CUR_DIR/Dockerfile $WORK_DIR
     cp ../vimrc.linux $WORK_DIR
 }
@@ -26,4 +28,4 @@ fi
 prepare_context
 
 cd $WORK_DIR
-docker build -t workstation:1.0 .
+docker build --progress=plain -t workstation:1.0 .

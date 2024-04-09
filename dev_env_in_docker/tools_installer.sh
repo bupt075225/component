@@ -2,18 +2,14 @@
 
 CONTEXT_DIR="/opt"
 
-install_yum_repos ()
+install_vim ()
 {
-    rm -fr /etc/yum.repos.d/*
-    cp $CONTEXT_DIR/*.repo /etc/yum.repos.d/
-    cp $CONTEXT_DIR/RPM-GPG-KEY-EPEL-8 /etc/pki/rpm-gpg/
+    apt -y install vim
 }
 
 install_depend_tools ()
 {
-    yum install vim -y
-    yum install ack -y
-    yum install git -y
+    apt install -y git universal-ctags ack
 }
 
 install_vim_plugins ()
@@ -30,7 +26,26 @@ install_vim_plugins ()
     vim +PlugInstall +qall
 }
 
-install_yum_repos
+config_system ()
+{
+    # Enable git auto completion
+    cp -fr $CONTEXT_DIR/git-completion.bash ~/.git-completion.bash
+    echo "source ~/.git-completion.bash" >> ~/.bashrc
+
+    # Show current git branch in command line
+    cat $CONTEXT_DIR/show_git_branch_conf >> ~/.bashrc
+}
+
+clean_env ()
+{
+    rm -fr $CONTEXT_DIR/*
+    apt clean
+}
+
+install_vim
 install_depend_tools
 install_vim_plugins
+config_system
+clean_env
 
+mkdir -p /home/git_repo

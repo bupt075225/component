@@ -22,8 +22,8 @@ map <F2> :NERDTreeToggle<cr>
 " Close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Open a NERDTree automatically when vim starts up
-autocmd vimenter * NERDTree 
-autocmd vimenter * wincmd p  " focus main windows on launch
+"autocmd vimenter * NERDTree 
+"autocmd vimenter * wincmd p  " focus main windows on launch
 
 " Added Ctrlp, Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
 Plug 'kien/ctrlp.vim'
@@ -70,6 +70,14 @@ endif
 Plug 'craigemery/vim-autotag'
 
 let g:autotagTagsFile="tags"
+" Added gitgutter, shows a git diff in the sign column
+Plug 'airblade/vim-gitgutter'
+
+" set the default value of updatetime to 100ms
+set updatetime=100
+
+" Added fugitive that is a git plugin
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 filetype plugin indent on  " not to ignore plugin indent changes
@@ -187,3 +195,6 @@ nnoremap  <leader>cq :<C-u>cclose<CR>
 " mapping key for ack
 " -i case-insensitive, Ctrl+r" to paste from the register
 nnoremap <Leader>a :Ack!<space>-i<space><C-r>"<CR>
+
+" mapping key for gitgutter
+nnoremap <leader>ggt :GitGutterToggle<CR>

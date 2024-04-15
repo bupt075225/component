@@ -25,39 +25,41 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "autocmd vimenter * NERDTree 
 "autocmd vimenter * wincmd p  " focus main windows on launch
 
-" Added Ctrlp, Full path fuzzy file, buffer, mru, tag, ... finder for Vim.
-Plug 'kien/ctrlp.vim'
+" Added LeaderF that is an efficient fuzzy finder
+Plug 'Yggdroot/LeaderF'
 
-" Exclude files and directories
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|svn)$',
-  \ 'file': '\v\.(swp|pyc|so|tar|tar.gz|zip)$',
-  \ }
-" Open a new file in a new tab
-let g:ctrlp_prompt_mappings = {
-  \ 'AcceptSelection("e")': ['<c-t>'],
-  \ 'AcceptSelection("t")': ['<cr>', '<2-LeftMouse>'],
-  \ }
+let g:Lf_ShortcutF = '<c-p>'
+let g:Lf_ShortcutB = '<m-n>'
+"noremap <c-n> :LeaderfMru<cr>
+"noremap <m-p> :LeaderfFunction!<cr>
+"noremap <m-n> :LeaderfBuffer<cr>
+"noremap <m-m> :LeaderfTag<cr>
+let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
-" Added ack(You will need ack (>= 2.0)),a search tool as a replacement for
-" grep
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_CacheDirectory = expand('~/.vim/cache')
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_StlColorscheme = 'powerline'
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+
+" Added ack(You will need ack (>= 2.0)),a search tool as a replacement for grep
 Plug 'mileszs/ack.vim'
 
-" highlight the keyword
+" Highlight the keyword
 let g:ackhighlight = 1
 
 " Added gutentags(management of tags files)
-" required vim version >=8.0 and ctags
+" Required vim version >=8.0 and ctags
 Plug 'ludovicchabant/vim-gutentags'
 
 " To know when Gutentags is generating tags
 "set statusline+=%{gutentags#statusline()}
 let g:gutentags_project_root = ['.git']
 
-" To know when Gutentags is generating tags
-set statusline+=%{gutentags#statusline()}
-let g:gutentags_project_root = ['.svn', '.git']
-" the suffix of tags data files
+" The suffix of tags data files
 let g:gutentags_ctags_tagfile = '.tags'
 " To avoid tags files to pollute your projects
 let s:vim_tags = expand('~/.cache/vim_tags')
@@ -65,6 +67,12 @@ let g:gutentags_cache_dir = s:vim_tags
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+
+" Universal ctags is required
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 
 " Added autotag
 Plug 'craigemery/vim-autotag'
@@ -78,6 +86,61 @@ set updatetime=100
 
 " Added fugitive that is a git plugin
 Plug 'tpope/vim-fugitive'
+
+" Added YouCompleteMe
+Plug 'ycm-core/YouCompleteMe'
+
+" YCM's identifier completer will also collect identifiers from tags files
+let g:ycm_collect_identifiers_from_tags_files=1
+
+" controls the minimum number of characters that a completion candidate coming
+let g:ycm_min_num_identifier_candidate_chars = 2
+
+" YCM's identifier completer will seed its identifier database with
+" the keywords of the programming language you're writing
+let g:ycm_seed_identifiers_with_syntax=1
+
+" controls for which Vim filetypes (see :h filetype) should YCM be turned on
+let g:ycm_filetype_whitelist = {"c":1, "cpp":1, "sh":1, "python":1, "go":1}
+
+let g:ycm_cache_omnifunc=0
+
+let g:ycm_server_log_level = 'info'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings=1
+let g:ycm_key_invoke_completion = '<c-z>'
+
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_add_preview_to_completeopt = 0
+set completeopt=menu,menuone
+
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,go': ['re!\w{2}'],
+			\ }
+
+" Added Go language support for Vim
+Plug 'fatih/vim-go'
+
+" Added the asynrun to enable you to run shell commands in the background 
+" and read the output in the quickfix window in realtime
+Plug 'skywind3000/asyncrun.vim'
+" TODO add configs to provid linting (syntax checking and semantic errors) 
+
+" Added the Asynchronous Lint Engine
+Plug 'dense-analysis/ale'
+
+let g:ale_linters_explicit = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
 
 call plug#end()
 filetype plugin indent on  " not to ignore plugin indent changes

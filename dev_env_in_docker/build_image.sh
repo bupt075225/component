@@ -7,10 +7,12 @@ CUR_DIR=$(pwd)
 prepare_context ()
 {
     echo "preparing context"
-    cp -fr $CUR_DIR/context/sources.list $WORK_DIR
-    cp -fr $CUR_DIR/context/plug.vim $WORK_DIR
-    cp -fr $CUR_DIR/context/show_git_branch_conf $WORK_DIR
-    cp -fr $CUR_DIR/context/git-completion.bash $WORK_DIR
+    #cp -fr $CUR_DIR/context/sources.list $WORK_DIR
+    #cp -fr $CUR_DIR/context/plug.vim $WORK_DIR
+    #cp -fr $CUR_DIR/context/show_git_branch_conf $WORK_DIR
+    #cp -fr $CUR_DIR/context/git-completion.bash $WORK_DIR
+    #cp -fr $CUR_DIR/context/YouCompleteMe $WORK_DIR
+    cp -fr $CUR_DIR/context/* $WORK_DIR
 
     cp $CUR_DIR/$INSTALLER $WORK_DIR
     cp $CUR_DIR/Dockerfile $WORK_DIR

@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
-ENV DOCKER_BUILDKIT=1
+ENV DOCKER_BUILDKIT=1 \
+    GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /opt
 COPY . /opt

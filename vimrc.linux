@@ -54,9 +54,17 @@ let g:ackhighlight = 1
 " Added gutentags(management of tags files)
 " Required vim version >=8.0 and ctags
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+
+set cscopetag
+set cscopeprg='gtags-cscope'
+
+" enable gtags module
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 " To know when Gutentags is generating tags
-"set statusline+=%{gutentags#statusline()}
+set statusline+=%{gutentags#statusline()}
+
 let g:gutentags_project_root = ['.git']
 
 " The suffix of tags data files
@@ -73,6 +81,9 @@ let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+" Change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
 
 " Added autotag
 Plug 'craigemery/vim-autotag'
@@ -142,6 +153,9 @@ let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
+" Provide a handy way to preview
+Plug 'skywind3000/vim-preview'
+
 call plug#end()
 filetype plugin indent on  " not to ignore plugin indent changes
 
@@ -171,6 +185,7 @@ set winaltkeys=no
 set mouse=a          " enable mouse under any mode
 set tags=tags;       " begin find tags file from working directory
 set autochdir        " set current dir as working directory
+set switchbuf+=usetab,newtab " open a new tab page before loading the buffer to switch to
 
 " record last edit location
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
@@ -261,3 +276,31 @@ nnoremap <Leader>a :Ack!<space>-i<space><C-r>"<CR>
 
 " mapping key for gitgutter
 nnoremap <leader>ggt :GitGutterToggle<CR>
+
+" mapping key for gutentags
+" disable the default keymaps
+let g:gutentags_plus_nomap = 1
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
+
+" mapping key for vim-preview
+autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
+autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
+execute "set <m-u>=u"
+execute "set <m-j>=j"
+noremap <m-u> :PreviewScroll -1<cr>
+noremap <m-j> :PreviewScroll +1<cr>
+inoremap <m-u> <c-\><c-o>:PreviewScroll -1<cr>
+inoremap <m-j> <c-\><c-o>:PreviewScroll +1<cr>
+
+" mapping key for Leaderf
+noremap <leader>ff :LeaderfFunction<cr>
+noremap <leader>fs :LeaderfTag<cr>

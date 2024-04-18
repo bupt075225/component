@@ -47,6 +47,8 @@ install_vim_plugins ()
     cp -fr $CONTEXT_DIR/vim-gitgutter ~/.vim/plugged/
     cp -fr $CONTEXT_DIR/vim-go ~/.vim/plugged/
     cp -fr $CONTEXT_DIR/vim-gutentags ~/.vim/plugged/
+    cp -fr $CONTEXT_DIR/gutentags_plus ~/.vim/plugged/
+    cp -fr $CONTEXT_DIR/vim-preview ~/.vim/plugged/
 
     cp -fr $CONTEXT_DIR/vimrc.linux /root/.vimrc
     install_youcompleteme
